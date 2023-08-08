@@ -1,0 +1,9 @@
+-   id: python-check-commit-message-pattern
+    name: check commit message pattern
+    description: 'enforce the first n commits on a branch to '
+    entry: 'check-message'
+    language: python
+    types: [python]
+    stages: [commit-msg]
+    fail_fast: true
+    args: [-p, '^[a-zA-Z]{2,6}-[0-9]+.+$']
