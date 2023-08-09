@@ -15,6 +15,8 @@ def main(argv=None) -> int:
     parser.add_argument("COMMIT_EDITMSG", help="name of the input to check against")
     parser.add_argument("-p", "--pattern", type=str, help="regex pattern that the commit-msg-file must match")
     parser.add_argument("-n", "--first-n", type=int, default=1, help="how many commits on the branch should match")
+    parser.add_argument("-b", "--default-branch", help="the branch HEAD will be compared to to "
+                                                       "find the current branch length")
     parser.add_argument("-r", "--repo-path", default=".")
     parser.add_argument("--debug", action="store_true")
 
@@ -28,7 +30,7 @@ def main(argv=None) -> int:
 
     commit_msg = Path(args.COMMIT_EDITMSG).read_text()
     # this is a commit-msg hook, so it happens before the first commit on the branch
-    if get_n_commits_in_branch(repo) < args.first_n and not re.match(args.pattern, commit_msg):
+    if get_n_commits_in_branch(repo, args.default_branch) < args.first_n and not re.match(args.pattern, commit_msg):
         print(f"commit message = {commit_msg!r} does not match the pattern {args.pattern}", file=sys.stderr)
         return 1
 
